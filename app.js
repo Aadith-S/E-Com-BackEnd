@@ -2,10 +2,12 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
-
+const profileRouter = require("./src/Profile/routes");
+const productRouter = require("./src/Product/routes");
 const app = express();
 dotenv.config();
 app.use(cors({origin : '*'}));
 app.use(bodyParser.json({inflate : true}));
-app.get('/',(req,res)=>res.send("Hello"));
+app.get('/api',profileRouter);
+app.get('/api',productRouter);
 app.listen(80);
