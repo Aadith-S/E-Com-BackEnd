@@ -40,22 +40,10 @@ const Users = sequelize.define("User", {
 
     unique: true,
   },
-
-  phone: {
-    type: DataTypes.STRING(50),
-
-    allowNull: false,
-
-    unique: true,
-  },
-
-  address: {
-    type: DataTypes.STRING(100),
-
-    allowNull: false,
-
-    unique: false,
-  },
+  profilePicture : {
+    type : DataTypes.STRING(100),
+    allowNull : true
+  }
 });
 
 const Products = sequelize.define("Product", {
