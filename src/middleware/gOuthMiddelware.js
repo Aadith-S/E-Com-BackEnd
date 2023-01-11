@@ -9,7 +9,7 @@ module.exports = async(req, res, next) => {
   token = token ? token.split(" ")[1] : null;
   if(token == "null") {
     console.log("in not");
-    return res.json(null);
+    return next();
   }
   else{
     async function verify() {
@@ -22,7 +22,7 @@ module.exports = async(req, res, next) => {
       return ticket.getPayload();
     }
 
-    // try {
+    try {
       const payload = await verify();
       console.log(payload.picture);
       const user = await Users.findOne({
@@ -69,11 +69,11 @@ module.exports = async(req, res, next) => {
       }
 
       return next();
-    // } catch (e) {
-    //     console.log("some error");
-    // return res
-    //     .status(401)
-    //     .json("Unauthorized.");
-    // }
+    } catch (e) {
+        console.log("some error");
+    return res
+        .status(401)
+        .json("Unauthorized.");
+    }
   }
 };
