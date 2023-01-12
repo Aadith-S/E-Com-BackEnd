@@ -15,7 +15,6 @@ module.exports = async(req, res, next) => {
     async function verify() {
       const ticket = await client.verifyIdToken({
         idToken: token,
-
         audience:process.env.CLIENT_ID,
       });
 
