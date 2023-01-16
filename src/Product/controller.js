@@ -4,45 +4,39 @@ const { Products } = require("../models/model");
 module.exports = {
   getProducts: async (req, res) => {
     try {
-      let filters={};
-      console.log(parseInt(req.query.min));
+      let filters={}; 
+      const {min,max,sort} = req.query;
       if(req.query){
-        if(isNaN(parseInt(req.query.min))){
-          console.log("in test");
-        }
-        if(isNaN(parseInt(req.query.min)) === false && isNaN(parseInt(req.query.max)) === false){
-          console.log("in not a number");
+        if(isNaN(parseInt(min)) === false && isNaN(parseInt(max)) === false){
           filters = {
             where :{
-            price : { [Op.between] : [parseInt(req.query.min),parseInt(req.query.max)]}
+            price : { [Op.between] : [parseInt(min),parseInt(max)]}
           },
-          order : [["price", req.query.sort]]
+          order : [["price", sort]]
         }
         }
-        else if(isNaN(parseInt(req.query.min)) === false){
+        else if(isNaN(parseInt(min)) === false){
           filters = {
             where :{
-            price : { [Op.gte] : parseInt(req.query.min)}
+            price : { [Op.gte] : parseInt(min)}
           },
-          order : [["price", req.query.sort]]
+          order : [["price", sort]]
         }
       }
-      else if(isNaN(parseInt(req.query.max)) === false){
+      else if(isNaN(parseInt(max)) === false){
         filters = {
           where :{
-          price : { [Op.lte] : parseInt(req.query.max)}
+          price : { [Op.lte] : parseInt(max)}
         },
-        order : [["price", req.query.sort]]
+        order : [["price", sort]]
       }
       }
         else{
         filters = {
-          order : [["price", req.query.sort]]
+          order : [["price", sort]]
         }
       }
-      }
-      console.log(filters);
-      console.log("in Products");
+      };
       const products = await Products.findAll(filters);
       return res.json(products);
     } catch (e) {
@@ -50,12 +44,11 @@ module.exports = {
     }
   },
   addProduct : async(req, res) => {
+    console.log("in addProduct");
+    const {productName:product_name,productPrice:price,productImage:product_image} = req.body;
     try {
-        console.log(req.body);
         await Products.create({
-          product_name : req.body.productName,
-          price : req.body.productPrice,
-          product_image : req.body.productImage
+          product_name,product_image,price
         })
         return res.status(201).json({ message: "Product added" });
     }
